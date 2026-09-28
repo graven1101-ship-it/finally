@@ -30,10 +30,14 @@ export function NavMain({
     url: string
     icon?: LucideIcon
     isActive?: boolean
+    color?: string
+    hoverColor?: string
     items?: {
       title: string
       url: string
       isActive?: boolean
+      hoverColor?: string
+      icon?: LucideIcon
     }[]
   }[]
 }) {
@@ -84,7 +88,7 @@ export function NavMain({
                     <SidebarMenuButton
                       asChild
                       tooltip={item.title}
-                      className="cursor-pointer"
+                      className={`cursor-pointer ${item.color || ""} ${item.hoverColor || ""}`}
                       isActive={isItemActive(item)}
                     >
                       <Link to={item.url}>
@@ -98,12 +102,13 @@ export function NavMain({
                     <SidebarMenuSub>
                       {item.items?.map((subItem) => (
                         <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton asChild className="cursor-pointer" isActive={isUrlActive(subItem.url)}>
+                          <SidebarMenuSubButton asChild className={`cursor-pointer ${subItem.hoverColor || ""}`} isActive={isUrlActive(subItem.url)}>
                             <Link 
                               to={subItem.url}
                               target={(item.title === "Auth Pages" || item.title === "Errors") ? "_blank" : undefined}
                               rel={(item.title === "Auth Pages" || item.title === "Errors") ? "noopener noreferrer" : undefined}
                             >
+                              {subItem.icon && <subItem.icon className="mr-1 h-3.5 w-3.5 shrink-0" />}
                               <span>{subItem.title}</span>
                             </Link>
                           </SidebarMenuSubButton>
@@ -113,7 +118,7 @@ export function NavMain({
                   </CollapsibleContent>
                 </>
               ) : (
-                <SidebarMenuButton asChild tooltip={item.title} className="cursor-pointer" isActive={location.pathname === item.url}>
+                <SidebarMenuButton asChild tooltip={item.title} className={`cursor-pointer ${item.color || ""} ${item.hoverColor || ""}`} isActive={location.pathname === item.url}>
                   <Link to={item.url}>
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>

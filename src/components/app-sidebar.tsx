@@ -15,6 +15,12 @@ import {
   CirclePercent,
   BookOpen,
   Receipt,
+  Building2,
+  Scale,
+  TrendingUp,
+  TrendingDown,
+  BookMarked,
+  ShieldCheck,
 } from "lucide-react"
 import { Link } from "react-router-dom"
 import { Logo } from "@/components/logo"
@@ -39,6 +45,7 @@ const data = {
   },
   navGroups: [
     {
+
       label: "Dashboards",
       items: [
         {
@@ -53,9 +60,49 @@ const data = {
       label: "Sub Modules",
       items: [
         {
-          title: "General Ledger",
+          title: "Ledgers",
           url: "/general-ledger",
           icon: BookOpen,
+          color: "text-blue-500 dark:text-blue-400",
+          hoverColor: "hover:bg-blue-500/10 hover:text-blue-600 dark:hover:bg-blue-400/10 dark:hover:text-blue-400",
+          items: [
+            {
+              title: "Assets",
+              url: "/assets",
+              icon: Building2,
+              hoverColor: "hover:bg-blue-500/10 hover:text-blue-600 dark:hover:bg-blue-400/10 dark:hover:text-blue-400",
+            },
+            {
+              title: "Liabilities",
+              url: "/liabilities",
+              icon: Scale,
+              hoverColor: "hover:bg-blue-500/10 hover:text-blue-600 dark:hover:bg-blue-400/10 dark:hover:text-blue-400",
+            },
+            {
+              title: "Equity",
+              url: "/equity",
+              icon: ShieldCheck,
+              hoverColor: "hover:bg-blue-500/10 hover:text-blue-600 dark:hover:bg-blue-400/10 dark:hover:text-blue-400",
+            },
+            {
+              title: "Revenue",
+              url: "/revenue",
+              icon: TrendingUp,
+              hoverColor: "hover:bg-blue-500/10 hover:text-blue-600 dark:hover:bg-blue-400/10 dark:hover:text-blue-400",
+            },
+            {
+              title: "Expenses",
+              url: "/expenses",
+              icon: TrendingDown,
+              hoverColor: "hover:bg-blue-500/10 hover:text-blue-600 dark:hover:bg-blue-400/10 dark:hover:text-blue-400",
+            },
+            {
+              title: "General Ledger",
+              url: "/general-ledger",
+              icon: BookMarked,
+              hoverColor: "hover:bg-blue-500/10 hover:text-blue-600 dark:hover:bg-blue-400/10 dark:hover:text-blue-400",
+            },
+          ],
         },
         {
           title: "Accounts Payable (AP)",

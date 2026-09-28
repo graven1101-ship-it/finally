@@ -15,11 +15,21 @@ import tasksData from "./data/tasks.json"
 import { applyBulkAction } from "./utils/bulk-actions"
 import type { BulkActionPayload } from "./utils/bulk-actions"
 import { branches } from "./data/data"
+import { ShieldCheck } from "lucide-react"
 
 const money = (amount = 0) =>
   new Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP" }).format(
     amount
   )
+
+// Statutory compliance payables — static reference data
+const statutoryPayables = [
+  { label: "SSS", amount: 45000, note: "Due: 10th of the month" },
+  { label: "PhilHealth", amount: 18500, note: "Due: 10th of the month" },
+  { label: "Pag-IBIG", amount: 12000, note: "Due: 10th of the month" },
+  { label: "Withholding Tax", amount: 62000, note: "Due: 10th of the month" },
+  { label: "VAT Payable", amount: 88000, note: "Due: 20th of the month" },
+]
 
 // Validate data to ensure it matches schema — preserved as immutable initial source
 const tasks = z.array(taskSchema).parse(tasksData)
@@ -95,6 +105,29 @@ export default function AccountsPayablePage() {
       title="Accounts Payable"
       description="Live invoices, approvals, vendors, attachments, and payment status."
     >
+      {/* Statutory Compliance Tracker */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-base">
+            <ShieldCheck className="h-5 w-5 text-emerald-600" />
+            Statutory Compliance Tracker
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            {statutoryPayables.map((pay, i) => (
+              <div key={i} className="rounded-lg border p-3">
+                <div className="text-sm font-medium">{pay.label}</div>
+                <div className="mt-1 text-lg font-semibold text-rose-600">
+                  {money(pay.amount)}
+                </div>
+                <div className="mt-1 text-xs text-muted-foreground">{pay.note}</div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
       <div className="space-y-6 px-4 lg:px-6">
         <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           <Card>

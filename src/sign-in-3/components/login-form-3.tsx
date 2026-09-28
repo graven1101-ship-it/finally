@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -14,10 +15,28 @@ export function LoginForm3({
   ...props
 }: React.ComponentProps<"div">) {
   const navigate = useNavigate()
+  
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    navigate("/dashboard")
+    setError(null)
+    setIsSubmitting(true)
+
+    try {
+      // Dummy login delay
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      
+      // On success, redirect
+      navigate("/dashboard")
+    } catch (err: any) {
+      setError(err.message)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -38,15 +57,23 @@ export function LoginForm3({
                 <h1 className="text-2xl font-bold">Welcome back</h1>
                 <p className="text-muted-foreground text-balance">Login to your PMS FINANCE account</p>
               </div>
+              
+              {error && (
+                <div className="text-red-500 text-sm font-medium text-center bg-red-50 dark:bg-red-900/10 p-2 rounded-md">
+                  {error}
+                </div>
+              )}
+
               <div className="grid gap-3">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
                   type="email"
                   placeholder="raven@gmail.com"
-                  // value={email}
-                  // onChange={(event) => setEmail(event.target.value)}
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
                   required
+                  disabled={isSubmitting}
                 />
               </div>
               <div className="grid gap-3">
@@ -59,14 +86,15 @@ export function LoginForm3({
                 <Input
                   id="password"
                   type="password"
-                  // value={password}
-                  // onChange={(event) => setPassword(event.target.value)}
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
                   required
+                  disabled={isSubmitting}
                 />
               </div>
 
-              <Button type="submit" className="w-full cursor-pointer">
-                Login
+              <Button type="submit" className="w-full cursor-pointer" disabled={isSubmitting}>
+                {isSubmitting ? "Logging in..." : "Login"}
               </Button>
 
               <div className="text-center text-sm">

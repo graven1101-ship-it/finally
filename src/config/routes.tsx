@@ -12,7 +12,7 @@ const Calendar = lazy(() => import('@/app/calendar/page'))
 const Users = lazy(() => import('@/app/users/page'))
 const FAQs = lazy(() => import('@/app/faqs/page'))
 const Pricing = lazy(() => import('@/app/pricing/page'))
-const GeneralLedger = lazy(() => import('@/app/general-ledger/page'))
+const GeneralLedger = lazy(() => import('@/app/general-ledger/prime-power-ledger'))
 const AccountsPayable = lazy(() => import('@/app/accounts-payable/page'))
 const AccountsReceivable = lazy(() => import('@/app/accounts-receivable/page'))
 const DisbursementManagement = lazy(() => import('@/app/disbursement-management/page'))
@@ -25,11 +25,16 @@ const Admin = lazy(() => import('@/app/admin/index'))
 const AccountSs = lazy(() => import('@/app/account-ss/page'))
 const FinancialReportingAnalytics = lazy(() => import('@/app/financial-reporting-analytics/page'))
 const TaxManagement = lazy(() => import('@/app/tax-management/page'))
+const Assets = lazy(() => import('@/app/assets/page'))
+const Liabilities = lazy(() => import('@/app/liabilities/page'))
+const Equity = lazy(() => import('@/app/equity/page'))
+const Revenue = lazy(() => import('@/app/revenue/page'))
+const Expenses = lazy(() => import('@/app/expenses/page'))
 
 // Auth pages
 const SignIn = lazy(() => import('@/app/auth/sign-in/page'))
 const SignIn2 = lazy(() => import('@/app/auth/sign-in-2/page'))
-const SignIn3 = lazy(() => import('@/app/auth/sign-in-3/page'))
+const SignIn3 = lazy(() => import('@/sign-in-3/page'))
 const SignUp = lazy(() => import('@/app/auth/sign-up/page'))
 const SignUp2 = lazy(() => import('@/app/auth/sign-up-2/page'))
 const SignUp3 = lazy(() => import('@/app/auth/sign-up-3/page'))
@@ -163,6 +168,26 @@ export const routes: RouteConfig[] = [
   {
     path: "/tax-management",
     element: <TaxManagement />
+  },
+  {
+    path: "/assets",
+    element: <Assets />
+  },
+  {
+    path: "/liabilities",
+    element: <Liabilities />
+  },
+  {
+    path: "/equity",
+    element: <Equity />
+  },
+  {
+    path: "/revenue",
+    element: <Revenue />
+  },
+  {
+    path: "/expenses",
+    element: <Expenses />
   },
 
   // Authentication Routes
