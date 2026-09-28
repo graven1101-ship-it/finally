@@ -94,7 +94,7 @@ const pmsChartOfAccounts: ChartCategory[] = [
     total: 28450000,
     description: "Generator fleets, transport vehicles, trade receivables & operating cash",
     accounts: [
-      { code: "101210", title: "Cash in Bank — Operating (BDO/BPI)", balance: 4850000, normalSide: "Debit" },
+      { code: "1010", title: "Cash in Bank — Operating (BDO/BPI)", balance: 4850000, normalSide: "Debit" },
       { code: "1020", title: "Petty Cash & Field Mobilization Fund", balance: 250000, normalSide: "Debit" },
       { code: "1100", title: "Trade Accounts Receivable (Clients)", balance: 8420000, normalSide: "Debit" },
       { code: "1200", title: "Generator Sets & Power Equipment (PPE)", balance: 11500000, normalSide: "Debit" },
