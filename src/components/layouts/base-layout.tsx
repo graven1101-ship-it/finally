@@ -6,6 +6,7 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { PeriodToggle } from "@/components/period-toggle"
 import { useSidebarConfig } from "@/hooks/use-sidebar-config"
+import { SensitiveValuesProvider } from "@/components/sensitive-values-provider"
 import {
   SidebarInset,
   SidebarProvider,
@@ -21,6 +22,7 @@ export function BaseLayout({ children, title, description }: BaseLayoutProps) {
   const { config } = useSidebarConfig()
 
   return (
+    <SensitiveValuesProvider>
     <SidebarProvider
       style={
         {
@@ -101,5 +103,6 @@ export function BaseLayout({ children, title, description }: BaseLayoutProps) {
         </>
       )}
     </SidebarProvider>
+    </SensitiveValuesProvider>
   )
 }

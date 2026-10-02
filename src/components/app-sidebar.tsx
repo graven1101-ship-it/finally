@@ -67,6 +67,12 @@ const data = {
           hoverColor: "hover:bg-blue-500/10 hover:text-blue-600 dark:hover:bg-blue-400/10 dark:hover:text-blue-400",
           items: [
             {
+              title: "General Ledger",
+              url: "/general-ledger",
+              icon: BookMarked,
+              hoverColor: "hover:bg-blue-500/10 hover:text-blue-600 dark:hover:bg-blue-400/10 dark:hover:text-blue-400",
+            },
+            {
               title: "Assets",
               url: "/assets",
               icon: Building2,
@@ -96,12 +102,7 @@ const data = {
               icon: TrendingDown,
               hoverColor: "hover:bg-blue-500/10 hover:text-blue-600 dark:hover:bg-blue-400/10 dark:hover:text-blue-400",
             },
-            {
-              title: "General Ledger",
-              url: "/general-ledger",
-              icon: BookMarked,
-              hoverColor: "hover:bg-blue-500/10 hover:text-blue-600 dark:hover:bg-blue-400/10 dark:hover:text-blue-400",
-            },
+
           ],
         },
         {
@@ -115,7 +116,11 @@ const data = {
             },
             {
               title: "Payroll",
-              url: "/accounts-payable",
+              url: "/payroll",
+            },
+            {
+              title: "Tax",
+              url: "/tax-management",
             },
 
           ],

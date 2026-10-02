@@ -16,6 +16,7 @@ import { applyBulkAction } from "./utils/bulk-actions"
 import type { BulkActionPayload } from "./utils/bulk-actions"
 import { branches } from "./data/data"
 import { ShieldCheck } from "lucide-react"
+import { Link } from "react-router-dom"
 
 const money = (amount = 0) =>
   new Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP" }).format(
@@ -106,27 +107,29 @@ export default function AccountsPayablePage() {
       description="Live invoices, approvals, vendors, attachments, and payment status."
     >
       {/* Statutory Compliance Tracker */}
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="flex items-center gap-2 text-base">
-            <ShieldCheck className="h-5 w-5 text-emerald-600" />
-            Statutory Compliance Tracker
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {statutoryPayables.map((pay, i) => (
-              <div key={i} className="rounded-lg border p-3">
-                <div className="text-sm font-medium">{pay.label}</div>
-                <div className="mt-1 text-lg font-semibold text-rose-600">
-                  {money(pay.amount)}
+      <Link to="/tax-management" className="block mb-6">
+        <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
+          <CardHeader className="pb-3">
+            <CardTitle className="flex items-center gap-2 text-base">
+              <ShieldCheck className="h-5 w-5 text-emerald-600" />
+              Statutory Compliance Tracker
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+              {statutoryPayables.map((pay, i) => (
+                <div key={i} className="rounded-lg border p-3">
+                  <div className="text-sm font-medium">{pay.label}</div>
+                  <div className="mt-1 text-lg font-semibold text-rose-600">
+                    {money(pay.amount)}
+                  </div>
+                  <div className="mt-1 text-xs text-muted-foreground">{pay.note}</div>
                 </div>
-                <div className="mt-1 text-xs text-muted-foreground">{pay.note}</div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </Link>
 
       <div className="space-y-6 px-4 lg:px-6">
         <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
