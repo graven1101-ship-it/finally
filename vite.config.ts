@@ -1,11 +1,12 @@
 import path from "path"
 import tailwindcss from "@tailwindcss/vite"
 import react from "@vitejs/plugin-react"
-import { defineConfig, loadEnv, Plugin } from "vite"
+import { defineConfig, loadEnv, type Plugin } from "vite"
 import pg from "pg"
 import bcrypt from "bcrypt"
 
 function postgresAuthPlugin(): Plugin {
+  let pool: pg.Pool | null = null;
   return {
     name: 'postgres-auth-plugin',
     configureServer(server) {
@@ -21,14 +22,19 @@ function postgresAuthPlugin(): Plugin {
               const { email, password } = JSON.parse(body);
               const env = loadEnv(server.config.mode, process.cwd(), '');
               
-              const pool = new pg.Pool({
-                connectionString: env.DATABASE_URL,
-                host: env.DB_HOST,
-                port: parseInt(env.DB_PORT || '5432'),
-                database: env.DB_DATABASE,
-                user: env.DB_USERNAME,
-                password: env.DB_PASSWORD,
-              });
+              if (!pool) {
+                pool = new pg.Pool(
+                  env.DATABASE_URL
+                    ? { connectionString: env.DATABASE_URL }
+                    : {
+                        host: env.DB_HOST || 'localhost',
+                        port: parseInt(env.DB_PORT || '5432'),
+                        database: env.DB_DATABASE,
+                        user: env.DB_USERNAME,
+                        password: env.DB_PASSWORD,
+                      }
+                );
+              }
 
               // Ensure users table exists
               await pool.query(`

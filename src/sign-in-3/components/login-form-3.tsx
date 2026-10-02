@@ -27,13 +27,30 @@ export function LoginForm3({
     setIsSubmitting(true)
 
     try {
-      // Dummy login delay
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      // On success, redirect
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || "Login failed")
+      }
+
+      if (data.token) {
+        localStorage.setItem("token", data.token)
+      }
+      if (data.user) {
+        localStorage.setItem("user", JSON.stringify(data.user))
+      }
+
       navigate("/dashboard")
     } catch (err: any) {
-      setError(err.message)
+      setError(err.message || "Failed to sign in")
     } finally {
       setIsSubmitting(false)
     }
@@ -69,7 +86,7 @@ export function LoginForm3({
                 <Input
                   id="email"
                   type="email"
-                  placeholder="raven@gmail.com"
+                  placeholder="name@example.com"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                   required
