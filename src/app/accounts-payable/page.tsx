@@ -16,6 +16,7 @@ import { applyBulkAction } from "./utils/bulk-actions"
 import type { BulkActionPayload } from "./utils/bulk-actions"
 import { branches } from "./data/data"
 import { ShieldCheck } from "lucide-react"
+import { Link } from "react-router-dom"
 
 const money = (amount = 0) =>
   new Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP" }).format(
@@ -106,27 +107,29 @@ export default function AccountsPayablePage() {
       description="Live invoices, approvals, vendors, attachments, and payment status."
     >
       {/* Statutory Compliance Tracker */}
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="flex items-center gap-2 text-base">
-            <ShieldCheck className="h-5 w-5 text-emerald-600" />
-            Statutory Compliance Tracker
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {statutoryPayables.map((pay, i) => (
-              <div key={i} className="rounded-lg border p-3">
-                <div className="text-sm font-medium">{pay.label}</div>
-                <div className="mt-1 text-lg font-semibold text-rose-600">
-                  {money(pay.amount)}
+      <Link to="/tax-management" className="block mb-6">
+        <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
+          <CardHeader className="pb-3">
+            <CardTitle className="flex items-center gap-2 text-base">
+              <ShieldCheck className="h-5 w-5 text-emerald-600" />
+              Statutory Compliance Tracker
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+              {statutoryPayables.map((pay, i) => (
+                <div key={i} className="rounded-lg border p-3">
+                  <div className="text-sm font-medium">{pay.label}</div>
+                  <div data-sensitive className="mt-1 text-lg font-semibold text-rose-600">
+                    {money(pay.amount)}
+                  </div>
+                  <div className="mt-1 text-xs text-muted-foreground">{pay.note}</div>
                 </div>
-                <div className="mt-1 text-xs text-muted-foreground">{pay.note}</div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </Link>
 
       <div className="space-y-6 px-4 lg:px-6">
         <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -135,7 +138,7 @@ export default function AccountsPayablePage() {
               <CardTitle className="text-sm font-medium">Outstanding (PHP)</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{money(totalOutstanding)}</div>
+              <div data-sensitive className="text-2xl font-bold">{money(totalOutstanding)}</div>
               <p className="text-xs text-muted-foreground">+20.1% from last month</p>
             </CardContent>
           </Card>
@@ -145,11 +148,11 @@ export default function AccountsPayablePage() {
               <CardTitle className="text-sm font-medium">Overdue / Critical</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-red-600 dark:text-red-400">
+              <div data-sensitive className="text-2xl font-bold text-red-600 dark:text-red-400">
                 {money(overdueTotal)}
               </div>
               <p className="text-xs text-muted-foreground">
-                {overdueCount} critical invoices
+                <span data-sensitive>{overdueCount}</span> critical invoices
               </p>
             </CardContent>
           </Card>
@@ -159,7 +162,7 @@ export default function AccountsPayablePage() {
               <CardTitle className="text-sm font-medium">Scheduled for Payment</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{money(scheduledTotal)}</div>
+              <div data-sensitive className="text-2xl font-bold">{money(scheduledTotal)}</div>
               <p className="text-xs text-muted-foreground">Next payment run: Friday</p>
             </CardContent>
           </Card>
@@ -169,7 +172,7 @@ export default function AccountsPayablePage() {
               <CardTitle className="text-sm font-medium">Awaiting Approval</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{myApprovals}</div>
+              <div data-sensitive className="text-2xl font-bold">{myApprovals}</div>
               <p className="text-xs text-muted-foreground">Require your attention</p>
             </CardContent>
           </Card>

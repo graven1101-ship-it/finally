@@ -593,7 +593,7 @@ export default function ExpensesPage() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{money(totalExpense)}</div>
+              <div data-sensitive className="text-2xl font-bold">{money(totalExpense)}</div>
               <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
                 <span className="font-semibold text-rose-600">{pct(cogsPercent)}</span> direct project & fleet COGS
               </p>
@@ -608,7 +608,7 @@ export default function ExpensesPage() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-emerald-600">{money(paidExpense)}</div>
+              <div data-sensitive className="text-2xl font-bold text-emerald-600">{money(paidExpense)}</div>
               <p className="text-xs text-muted-foreground mt-1">
                 {pct(totalExpense > 0 ? (paidExpense / totalExpense) * 100 : 0)} settled via check & wire
               </p>
@@ -623,7 +623,7 @@ export default function ExpensesPage() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-amber-600">{money(pendingExpense)}</div>
+              <div data-sensitive className="text-2xl font-bold text-amber-600">{money(pendingExpense)}</div>
               <p className="text-xs text-muted-foreground mt-1">
                 Awaiting voucher clearance or due date
               </p>
@@ -638,7 +638,7 @@ export default function ExpensesPage() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-red-600">{money(overdueExpense)}</div>
+              <div data-sensitive className="text-2xl font-bold text-red-600">{money(overdueExpense)}</div>
               <p className="text-xs text-muted-foreground mt-1">
                 {expenses.filter((e) => e.status === "overdue").length} voucher requiring immediate release
               </p>
@@ -668,14 +668,14 @@ export default function ExpensesPage() {
               <div className="grid grid-cols-2 gap-4 p-3 rounded-lg bg-muted/40 text-xs">
                 <div>
                   <span className="text-muted-foreground">Direct Service COGS:</span>{" "}
-                  <strong className="text-foreground font-semibold">{money(directCOGS)}</strong>
+                  <strong data-sensitive className="text-foreground font-semibold">{money(directCOGS)}</strong>
                   <div className="text-[11px] text-muted-foreground mt-0.5">
                     Field crews, Fuel, OEM parts, Transport
                   </div>
                 </div>
                 <div>
                   <span className="text-muted-foreground">Admin & Yard OPEX:</span>{" "}
-                  <strong className="text-foreground font-semibold">{money(adminOPEX)}</strong>
+                  <strong data-sensitive className="text-foreground font-semibold">{money(adminOPEX)}</strong>
                   <div className="text-[11px] text-muted-foreground mt-0.5">
                     Staging depot, utilities, management
                   </div>
@@ -697,7 +697,7 @@ export default function ExpensesPage() {
                           <span className="text-[10px] text-muted-foreground">({count} items)</span>
                         </div>
                         <div className="text-right">
-                          <span className="font-semibold">{money(total)}</span>
+                          <span data-sensitive className="font-semibold">{money(total)}</span>
                           <span className="text-muted-foreground ml-1.5 font-normal">({pct(share)})</span>
                         </div>
                       </div>
@@ -726,7 +726,7 @@ export default function ExpensesPage() {
                     <p className="text-[11px] text-muted-foreground">{vendor.category}</p>
                   </div>
                   <div className="text-right">
-                    <div className="font-semibold">{money(vendor.total)}</div>
+                    <div data-sensitive className="font-semibold">{money(vendor.total)}</div>
                     <div className="text-[10px] text-muted-foreground">{vendor.count} trx</div>
                   </div>
                 </div>
@@ -833,7 +833,7 @@ export default function ExpensesPage() {
                                 {expense.paymentMethod}
                               </Badge>
                             </TableCell>
-                            <TableCell className="text-xs font-bold text-right whitespace-nowrap">
+                            <TableCell data-sensitive className="text-xs font-bold text-right whitespace-nowrap">
                               {money(expense.amount)}
                             </TableCell>
                             <TableCell className="text-center">

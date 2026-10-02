@@ -186,7 +186,7 @@ export default function GeneralLedgerPage() {
                 <CardTitle className="text-sm font-medium text-muted-foreground">{cat.category}</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{formatCurrency(cat.total)}</div>
+                <div className="text-2xl font-bold"><span data-sensitive>{formatCurrency(cat.total)}</span></div>
                 <div className="mt-2 text-xs text-muted-foreground">
                   {cat.accounts.length} Accounts
                 </div>
@@ -216,7 +216,7 @@ export default function GeneralLedgerPage() {
                 <div key={i} className="rounded-lg border p-3">
                   <div className="text-sm font-medium">{pay.label}</div>
                   <div className="mt-1 text-lg font-semibold text-rose-600">
-                    {formatCurrency(pay.amount)}
+                    <span data-sensitive>{formatCurrency(pay.amount)}</span>
                   </div>
                   <div className="mt-1 text-xs text-muted-foreground">{pay.note}</div>
                 </div>

@@ -8,6 +8,7 @@ import { QuickActions } from "./components/quick-actions"
 import { RevenueBreakdown } from "./components/revenue-breakdown"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ShieldCheck } from "lucide-react"
+import { Link } from "react-router-dom"
 
 const formatCurrency = (amount: number) =>
   new Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP" }).format(amount)
@@ -40,27 +41,29 @@ export default function Dashboard2() {
         <div className="@container/main space-y-6">
           {/* Top Row - Key Metrics */}
           {/* Statutory Compliance Tracker */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-base">
-                <ShieldCheck className="h-5 w-5 text-emerald-600" />
-                Statutory Compliance Tracker
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-                {statutoryPayables.map((pay, i) => (
-                  <div key={i} className="rounded-lg border p-3">
-                    <div className="text-sm font-medium">{pay.label}</div>
-                    <div className="mt-1 text-lg font-semibold text-rose-600">
-                      {formatCurrency(pay.amount)}
+          <Link to="/tax-management">
+            <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-base">
+                  <ShieldCheck className="h-5 w-5 text-emerald-600" />
+                  Statutory Compliance Tracker
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+                  {statutoryPayables.map((pay, i) => (
+                    <div key={i} className="rounded-lg border p-3">
+                      <div className="text-sm font-medium">{pay.label}</div>
+                      <div data-sensitive className="mt-1 text-lg font-semibold text-rose-600">
+                        {formatCurrency(pay.amount)}
+                      </div>
+                      <div className="mt-1 text-xs text-muted-foreground">{pay.note}</div>
                     </div>
-                    <div className="mt-1 text-xs text-muted-foreground">{pay.note}</div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
 
           <MetricsOverview />
 

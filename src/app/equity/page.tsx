@@ -236,7 +236,7 @@ export default function EquityPage() {
             <ShieldCheck className="h-4 w-4 text-emerald-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{money(currentEquity)}</div>
+            <div data-sensitive className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{money(currentEquity)}</div>
             <p className="text-xs text-muted-foreground">As of Sep 26, 2026</p>
           </CardContent>
         </Card>
@@ -247,7 +247,7 @@ export default function EquityPage() {
             <Banknote className="h-4 w-4 text-blue-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{money(capitalStock.paidUp.total + additionalPaidIn)}</div>
+            <div data-sensitive className="text-2xl font-bold">{money(capitalStock.paidUp.total + additionalPaidIn)}</div>
             <p className="text-xs text-muted-foreground">{capitalStock.paidUp.shares.toLocaleString()} shares @ ₱{capitalStock.paidUp.parValue} par</p>
           </CardContent>
         </Card>
@@ -258,7 +258,7 @@ export default function EquityPage() {
             <TrendingUp className="h-4 w-4 text-violet-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{money(currentRE)}</div>
+            <div data-sensitive className="text-2xl font-bold">{money(currentRE)}</div>
             <p className="text-xs text-muted-foreground">{pct((currentRE / currentEquity) * 100)} of total equity</p>
           </CardContent>
         </Card>
@@ -269,7 +269,7 @@ export default function EquityPage() {
             <BadgeDollarSign className="h-4 w-4 text-amber-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">₱{bookValuePerShare.toFixed(4)}</div>
+            <div data-sensitive className="text-2xl font-bold">₱{bookValuePerShare.toFixed(4)}</div>
             <p className="text-xs text-muted-foreground">{capitalStock.outstanding.shares.toLocaleString()} shares outstanding</p>
           </CardContent>
         </Card>
@@ -296,7 +296,7 @@ export default function EquityPage() {
               <div key={row.label} className="flex justify-between text-sm">
                 <span className="text-muted-foreground">{row.label}</span>
                 <div className="text-right">
-                  <div className="font-medium">{money(row.total)}</div>
+                  <div data-sensitive className="font-medium">{money(row.total)}</div>
                   <div className="text-xs text-muted-foreground">{row.shares.toLocaleString()} shares</div>
                 </div>
               </div>
@@ -324,7 +324,7 @@ export default function EquityPage() {
                 <div key={item.label} className="space-y-1">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">{item.label}</span>
-                    <span className="font-medium">{money(item.amount)}</span>
+                    <span data-sensitive className="font-medium">{money(item.amount)}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="flex-1 h-2 rounded-full bg-muted overflow-hidden">
@@ -337,7 +337,7 @@ export default function EquityPage() {
             })}
             <div className="pt-2 border-t flex justify-between text-sm font-semibold">
               <span>Total Equity</span>
-              <span className="text-emerald-600">{money(currentEquity)}</span>
+              <span data-sensitive className="text-emerald-600">{money(currentEquity)}</span>
             </div>
           </CardContent>
         </Card>
@@ -415,14 +415,14 @@ export default function EquityPage() {
                               {row.label}
                             </div>
                           </TableCell>
-                          <TableCell className="text-right">{row.capitalStock !== 0 ? money(row.capitalStock) : "—"}</TableCell>
-                          <TableCell className="text-right">{row.additionalPaidIn !== 0 ? money(row.additionalPaidIn) : "—"}</TableCell>
+                          <TableCell data-sensitive className="text-right">{row.capitalStock !== 0 ? money(row.capitalStock) : "—"}</TableCell>
+                          <TableCell data-sensitive className="text-right">{row.additionalPaidIn !== 0 ? money(row.additionalPaidIn) : "—"}</TableCell>
                           <TableCell className={`text-right ${row.retainedEarnings < 0 ? "text-rose-600 dark:text-rose-400" : row.retainedEarnings > 0 && !isBold ? "text-emerald-600 dark:text-emerald-400" : ""}`}>
-                            {row.retainedEarnings !== 0 ? money(Math.abs(row.retainedEarnings)) : "—"}
+                            <span data-sensitive>{row.retainedEarnings !== 0 ? money(Math.abs(row.retainedEarnings)) : "—"}</span>
                             {row.retainedEarnings < 0 && " (D)"}
                           </TableCell>
                           <TableCell className={`text-right font-bold ${row.total < 0 ? "text-rose-600" : isClosing ? "text-emerald-600 dark:text-emerald-400" : ""}`}>
-                            {row.total < 0 ? `(${money(Math.abs(row.total))})` : money(row.total)}
+                            <span data-sensitive>{row.total < 0 ? `(${money(Math.abs(row.total))})` : money(row.total)}</span>
                           </TableCell>
                         </TableRow>
                       )
@@ -465,9 +465,9 @@ export default function EquityPage() {
                           <Badge variant={reMeta[entry.type].variant}>{reMeta[entry.type].label}</Badge>
                         </TableCell>
                         <TableCell className={`text-right font-medium ${entry.amount < 0 ? "text-rose-600 dark:text-rose-400" : entry.amount > 0 ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"}`}>
-                          {entry.amount === 0 ? "—" : entry.amount > 0 ? money(entry.amount) : `(${money(Math.abs(entry.amount))})`}
+                          {entry.amount === 0 ? "—" : <span data-sensitive>{entry.amount > 0 ? money(entry.amount) : `(${money(Math.abs(entry.amount))})`}</span>}
                         </TableCell>
-                        <TableCell className="text-right font-semibold">{money(entry.runningBalance)}</TableCell>
+                        <TableCell data-sensitive className="text-right font-semibold">{money(entry.runningBalance)}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -507,14 +507,14 @@ export default function EquityPage() {
                         <TableCell><Badge variant="outline">{s.type}</Badge></TableCell>
                         <TableCell className="text-right tabular-nums">{s.shares.toLocaleString()}</TableCell>
                         <TableCell className="text-right font-semibold text-violet-600">{pct(s.pctOwned)}</TableCell>
-                        <TableCell className="text-right">{money((s.pctOwned / 100) * currentEquity)}</TableCell>
+                        <TableCell data-sensitive className="text-right">{money((s.pctOwned / 100) * currentEquity)}</TableCell>
                       </TableRow>
                     ))}
                     <TableRow className="bg-muted/50 font-semibold">
                       <TableCell colSpan={4} className="text-right">Total</TableCell>
                       <TableCell className="text-right tabular-nums">{capitalStock.outstanding.shares.toLocaleString()}</TableCell>
                       <TableCell className="text-right">100.0%</TableCell>
-                      <TableCell className="text-right text-emerald-600">{money(currentEquity)}</TableCell>
+                      <TableCell data-sensitive className="text-right text-emerald-600">{money(currentEquity)}</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
@@ -550,7 +550,7 @@ export default function EquityPage() {
                       <TableRow key={d.year} className="text-sm">
                         <TableCell className="font-medium">{d.year}</TableCell>
                         <TableCell className="text-right">
-                          {d.declared != null ? money(d.declared) : <span className="text-muted-foreground italic">TBD</span>}
+                          {d.declared != null ? <span data-sensitive>{money(d.declared)}</span> : <span className="text-muted-foreground italic">TBD</span>}
                         </TableCell>
                         <TableCell className="text-right tabular-nums">
                           {d.perShare != null ? `₱${d.perShare.toFixed(3)}` : <span className="text-muted-foreground">—</span>}
@@ -566,7 +566,7 @@ export default function EquityPage() {
                     <TableRow className="bg-muted/50 font-semibold">
                       <TableCell>Total Dividends Paid (CY2022–2026)</TableCell>
                       <TableCell className="text-right">
-                        {money(dividendHistory.filter(d => d.status === "paid" && d.declared).reduce((s, d) => s + (d.declared ?? 0), 0))}
+                        <span data-sensitive>{money(dividendHistory.filter(d => d.status === "paid" && d.declared).reduce((s, d) => s + (d.declared ?? 0), 0))}</span>
                       </TableCell>
                       <TableCell colSpan={3} />
                     </TableRow>

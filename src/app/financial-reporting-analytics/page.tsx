@@ -168,7 +168,7 @@ export default function FinancialReportingAnalyticsPage() {
                       <p className="text-sm text-muted-foreground">{item.note}</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-semibold">{item.value}</p>
+                      <p className="font-semibold"><span data-sensitive>{item.value}</span></p>
                       <p className={`text-xs ${item.trend === "up" ? "text-emerald-600" : "text-amber-600"}`}>
                         {item.trend === "up" ? <ArrowUpRight className="mr-1 inline h-3 w-3" /> : <ArrowDownRight className="mr-1 inline h-3 w-3" />} {item.change}
                       </p>

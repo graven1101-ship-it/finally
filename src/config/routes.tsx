@@ -25,6 +25,7 @@ const Admin = lazy(() => import('@/app/admin/index'))
 const AccountSs = lazy(() => import('@/app/account-ss/page'))
 const FinancialReportingAnalytics = lazy(() => import('@/app/financial-reporting-analytics/page'))
 const TaxManagement = lazy(() => import('@/app/tax-management/page'))
+const Payroll = lazy(() => import('@/app/payroll/page'))
 const Assets = lazy(() => import('@/app/assets/page'))
 const Liabilities = lazy(() => import('@/app/liabilities/page'))
 const Equity = lazy(() => import('@/app/equity/page'))
@@ -168,6 +169,10 @@ export const routes: RouteConfig[] = [
   {
     path: "/tax-management",
     element: <TaxManagement />
+  },
+  {
+    path: "/payroll",
+    element: <Payroll />
   },
   {
     path: "/assets",

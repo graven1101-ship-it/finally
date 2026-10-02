@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import * as React from "react"
 import {
@@ -176,7 +176,7 @@ export default function AssetsPage() {
             <PackageSearch className="h-4 w-4 text-blue-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{money(totalCost)}</div>
+            <div data-sensitive className="text-2xl font-bold">{money(totalCost)}</div>
             <p className="text-xs text-muted-foreground">{assetRegister.length} registered assets</p>
           </CardContent>
         </Card>
@@ -187,7 +187,7 @@ export default function AssetsPage() {
             <BarChart3 className="h-4 w-4 text-emerald-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{money(totalBookValue)}</div>
+            <div data-sensitive className="text-2xl font-bold">{money(totalBookValue)}</div>
             <p className="text-xs text-muted-foreground">
               {pct((totalBookValue / totalCost) * 100)} of original cost
             </p>
@@ -200,7 +200,7 @@ export default function AssetsPage() {
             <TrendingDown className="h-4 w-4 text-rose-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-rose-600 dark:text-rose-400">{money(totalAccumDep)}</div>
+            <div data-sensitive className="text-2xl font-bold text-rose-600 dark:text-rose-400">{money(totalAccumDep)}</div>
             <Progress value={depreciationRate} className="mt-2 h-1.5" />
             <p className="text-xs text-muted-foreground mt-1">{pct(depreciationRate)} depreciated</p>
           </CardContent>
@@ -212,7 +212,7 @@ export default function AssetsPage() {
             <FileText className="h-4 w-4 text-amber-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{money(monthlyDepreciation)}</div>
+            <div data-sensitive className="text-2xl font-bold">{money(monthlyDepreciation)}</div>
             <p className="text-xs text-muted-foreground">
               {activeCount} active · {maintenanceCount} in maintenance
             </p>
@@ -257,11 +257,11 @@ export default function AssetsPage() {
               <CardContent className="space-y-3">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Cost</span>
-                  <span className="font-medium">{money(cat.totalCost)}</span>
+                  <span data-sensitive className="font-medium">{money(cat.totalCost)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Book Value</span>
-                  <span className={`font-semibold ${cat.color}`}>{money(cat.bookValue)}</span>
+                  <span data-sensitive className={`font-semibold ${cat.color}`}>{money(cat.bookValue)}</span>
                 </div>
                 <Progress value={depPct} className="h-1.5" />
                 <p className="text-xs text-muted-foreground">{pct(depPct)} depreciated</p>
@@ -319,12 +319,12 @@ export default function AssetsPage() {
                           <TableCell className="font-medium">{asset.name}</TableCell>
                           <TableCell className="text-muted-foreground">{asset.category}</TableCell>
                           <TableCell className="text-muted-foreground">{asset.location}</TableCell>
-                          <TableCell className="text-right">{money(asset.cost)}</TableCell>
+                          <TableCell data-sensitive className="text-right">{money(asset.cost)}</TableCell>
                           <TableCell className="text-right text-rose-600 dark:text-rose-400">
-                            {asset.accumulatedDepreciation > 0 ? `(${money(asset.accumulatedDepreciation)})` : "—"}
+                            {asset.accumulatedDepreciation > 0 ? <span data-sensitive>{`(${money(asset.accumulatedDepreciation)})`}</span> : "—"}
                           </TableCell>
                           <TableCell className="text-right font-semibold">
-                            {asset.bookValue > 0 ? money(asset.bookValue) : <span className="text-muted-foreground">—</span>}
+                            {asset.bookValue > 0 ? <span data-sensitive>{money(asset.bookValue)}</span> : <span className="text-muted-foreground">—</span>}
                           </TableCell>
                           <TableCell>{asset.usefulLife} yrs</TableCell>
                           <TableCell className="text-muted-foreground whitespace-nowrap">{asset.acquisitionDate}</TableCell>
@@ -369,8 +369,8 @@ export default function AssetsPage() {
                             {row.month}
                             {isCurrentMonth && <Badge variant="secondary" className="ml-2 text-xs">Current</Badge>}
                           </TableCell>
-                          <TableCell className="text-right">{money(row.amount)}</TableCell>
-                          <TableCell className="text-right">{money(row.cumulative)}</TableCell>
+                          <TableCell data-sensitive className="text-right">{money(row.amount)}</TableCell>
+                          <TableCell data-sensitive className="text-right">{money(row.cumulative)}</TableCell>
                           <TableCell>
                             <div className="flex items-center gap-2">
                               <Progress value={progress} className="h-2 flex-1" />
