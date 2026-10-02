@@ -120,7 +120,7 @@ export default function AccountsPayablePage() {
               {statutoryPayables.map((pay, i) => (
                 <div key={i} className="rounded-lg border p-3">
                   <div className="text-sm font-medium">{pay.label}</div>
-                  <div className="mt-1 text-lg font-semibold text-rose-600">
+                  <div data-sensitive className="mt-1 text-lg font-semibold text-rose-600">
                     {money(pay.amount)}
                   </div>
                   <div className="mt-1 text-xs text-muted-foreground">{pay.note}</div>
@@ -138,7 +138,7 @@ export default function AccountsPayablePage() {
               <CardTitle className="text-sm font-medium">Outstanding (PHP)</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{money(totalOutstanding)}</div>
+              <div data-sensitive className="text-2xl font-bold">{money(totalOutstanding)}</div>
               <p className="text-xs text-muted-foreground">+20.1% from last month</p>
             </CardContent>
           </Card>
@@ -148,11 +148,11 @@ export default function AccountsPayablePage() {
               <CardTitle className="text-sm font-medium">Overdue / Critical</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-red-600 dark:text-red-400">
+              <div data-sensitive className="text-2xl font-bold text-red-600 dark:text-red-400">
                 {money(overdueTotal)}
               </div>
               <p className="text-xs text-muted-foreground">
-                {overdueCount} critical invoices
+                <span data-sensitive>{overdueCount}</span> critical invoices
               </p>
             </CardContent>
           </Card>
@@ -162,7 +162,7 @@ export default function AccountsPayablePage() {
               <CardTitle className="text-sm font-medium">Scheduled for Payment</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{money(scheduledTotal)}</div>
+              <div data-sensitive className="text-2xl font-bold">{money(scheduledTotal)}</div>
               <p className="text-xs text-muted-foreground">Next payment run: Friday</p>
             </CardContent>
           </Card>
@@ -172,7 +172,7 @@ export default function AccountsPayablePage() {
               <CardTitle className="text-sm font-medium">Awaiting Approval</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{myApprovals}</div>
+              <div data-sensitive className="text-2xl font-bold">{myApprovals}</div>
               <p className="text-xs text-muted-foreground">Require your attention</p>
             </CardContent>
           </Card>

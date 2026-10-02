@@ -133,7 +133,7 @@ export default function BudgetManagementPage() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-semibold">{formatCurrency(item.value)}</div>
+                  <div className="text-2xl font-semibold"><span data-sensitive>{formatCurrency(item.value)}</span></div>
                   <div className={`mt-1 flex items-center gap-1 text-sm ${isPositive ? "text-emerald-600" : "text-rose-600"}`}>
                     {isPositive ? <ArrowUpRight className="h-4 w-4" /> : <ArrowDownRight className="h-4 w-4" />}
                     <span>{item.change} vs last period</span>
@@ -242,9 +242,9 @@ export default function BudgetManagementPage() {
                       <TableRow key={item.module}>
                         <TableCell className="font-medium">{item.module}</TableCell>
                         <TableCell>{item.owner}</TableCell>
-                        <TableCell className="text-right">{formatCurrency(item.approved)}</TableCell>
-                        <TableCell className="text-right">{formatCurrency(item.actual)}</TableCell>
-                        <TableCell className={`text-right ${varianceColor}`}>{formatCurrency(item.variance)}</TableCell>
+                        <TableCell className="text-right"><span data-sensitive>{formatCurrency(item.approved)}</span></TableCell>
+                        <TableCell className="text-right"><span data-sensitive>{formatCurrency(item.actual)}</span></TableCell>
+                        <TableCell className={`text-right ${varianceColor}`}><span data-sensitive>{formatCurrency(item.variance)}</span></TableCell>
                         <TableCell>
                           <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${item.status === "Healthy" ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400" : "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"}`}>
                             {item.status}

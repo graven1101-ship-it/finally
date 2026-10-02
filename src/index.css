@@ -270,3 +270,12 @@ html {
     width: 5.75rem;
   }
 }
+
+/* Sensitive values blur mask */
+html[data-sensitive-hidden="true"] [data-sensitive],
+html[data-sensitive-hidden="true"] .sensitive-value {
+  filter: blur(5px);
+  user-select: none;
+  pointer-events: none;
+  transition: filter 0.15s ease;
+}

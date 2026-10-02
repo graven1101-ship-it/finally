@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import * as React from "react"
 import {
@@ -331,7 +331,7 @@ export default function LiabilitiesPage() {
             <Scale className="h-4 w-4 text-rose-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{money(totalLiabilities)}</div>
+            <div data-sensitive className="text-2xl font-bold">{money(totalLiabilities)}</div>
             <p className="text-xs text-muted-foreground">{register.length} recorded obligations</p>
           </CardContent>
         </Card>
@@ -342,7 +342,7 @@ export default function LiabilitiesPage() {
             <CreditCard className="h-4 w-4 text-amber-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{money(currentLiabilities)}</div>
+            <div data-sensitive className="text-2xl font-bold">{money(currentLiabilities)}</div>
             <p className="text-xs text-muted-foreground">Due within 12 months</p>
           </CardContent>
         </Card>
@@ -353,7 +353,7 @@ export default function LiabilitiesPage() {
             <Landmark className="h-4 w-4 text-blue-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{money(nonCurrentLiabilities)}</div>
+            <div data-sensitive className="text-2xl font-bold">{money(nonCurrentLiabilities)}</div>
             <p className="text-xs text-muted-foreground">Long-term obligations</p>
           </CardContent>
         </Card>
@@ -364,7 +364,7 @@ export default function LiabilitiesPage() {
             <FileWarning className="h-4 w-4 text-red-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-rose-600 dark:text-rose-400">{money(overdueTotal)}</div>
+            <div data-sensitive className="text-2xl font-bold text-rose-600 dark:text-rose-400">{money(overdueTotal)}</div>
             <p className="text-xs text-muted-foreground">{overdueCount} overdue item{overdueCount !== 1 ? "s" : ""} — requires action</p>
           </CardContent>
         </Card>
@@ -386,7 +386,7 @@ export default function LiabilitiesPage() {
               <CardContent className="space-y-3">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Total</span>
-                  <span className={`font-bold ${cat.color}`}>{money(cat.total)}</span>
+                  <span data-sensitive className={`font-bold ${cat.color}`}>{money(cat.total)}</span>
                 </div>
                 <Progress value={catPct} className="h-1.5" />
                 <p className="text-xs text-muted-foreground">{pct(catPct)} of total liabilities</p>
@@ -452,12 +452,12 @@ export default function LiabilitiesPage() {
                             <TableCell className="text-muted-foreground whitespace-nowrap">{liab.category}</TableCell>
                             <TableCell className="text-muted-foreground">{liab.creditor}</TableCell>
                             <TableCell className="text-muted-foreground whitespace-nowrap">{liab.branch}</TableCell>
-                            <TableCell className="text-right">{money(liab.amount)}</TableCell>
+                            <TableCell data-sensitive className="text-right">{money(liab.amount)}</TableCell>
                             <TableCell className="text-right text-emerald-600 dark:text-emerald-400">
-                              {liab.amountPaid > 0 ? money(liab.amountPaid) : "—"}
+                              {liab.amountPaid > 0 ? <span data-sensitive>{money(liab.amountPaid)}</span> : "—"}
                             </TableCell>
                             <TableCell className={`text-right font-semibold ${balance > 0 ? "text-rose-600 dark:text-rose-400" : "text-muted-foreground"}`}>
-                              {balance > 0 ? money(balance) : "—"}
+                              {balance > 0 ? <span data-sensitive>{money(balance)}</span> : "—"}
                             </TableCell>
                             <TableCell className="text-muted-foreground whitespace-nowrap">{liab.dueDate}</TableCell>
                             <TableCell>
@@ -503,9 +503,9 @@ export default function LiabilitiesPage() {
                       <TableRow key={pay.label} className={pay.status === "overdue" ? "bg-rose-50/50 dark:bg-rose-950/10" : ""}>
                         <TableCell className="font-medium">{pay.label}</TableCell>
                         <TableCell className="font-mono text-xs text-muted-foreground">{pay.form}</TableCell>
-                        <TableCell className="text-right">{pay.employer > 0 ? money(pay.employer) : "—"}</TableCell>
-                        <TableCell className="text-right">{pay.employee > 0 ? money(pay.employee) : "—"}</TableCell>
-                        <TableCell className="text-right font-semibold">{money(pay.total)}</TableCell>
+                        <TableCell data-sensitive className="text-right">{pay.employer > 0 ? money(pay.employer) : "—"}</TableCell>
+                        <TableCell data-sensitive className="text-right">{pay.employee > 0 ? money(pay.employee) : "—"}</TableCell>
+                        <TableCell data-sensitive className="text-right font-semibold">{money(pay.total)}</TableCell>
                         <TableCell className="text-muted-foreground whitespace-nowrap">{pay.due}</TableCell>
                         <TableCell>
                           <Badge variant={statusMeta[pay.status].variant}>{statusMeta[pay.status].label}</Badge>
@@ -514,7 +514,7 @@ export default function LiabilitiesPage() {
                     ))}
                     <TableRow className="bg-muted/50 font-semibold">
                       <TableCell colSpan={4} className="text-right">Total Statutory Obligations</TableCell>
-                      <TableCell className="text-right">{money(totalStatutory)}</TableCell>
+                      <TableCell data-sensitive className="text-right">{money(totalStatutory)}</TableCell>
                       <TableCell colSpan={2} />
                     </TableRow>
                   </TableBody>
@@ -543,7 +543,7 @@ export default function LiabilitiesPage() {
                     <div key={bucket.label} className="space-y-1.5">
                       <div className="flex justify-between text-sm">
                         <span className="font-medium">{bucket.label}</span>
-                        <span className="tabular-nums">{money(bucket.amount)}</span>
+                        <span data-sensitive className="tabular-nums">{money(bucket.amount)}</span>
                       </div>
                       <div className="flex items-center gap-3">
                         <div className="flex-1 overflow-hidden rounded-full bg-muted h-3">
@@ -570,7 +570,7 @@ export default function LiabilitiesPage() {
                     ].map(b => (
                       <div key={b.branch} className="rounded-lg border bg-card p-3">
                         <div className="text-xs text-muted-foreground">{b.branch}</div>
-                        <div className={`text-lg font-bold mt-1 ${b.amount > 0 ? "" : "text-muted-foreground"}`}>
+                        <div data-sensitive className={`text-lg font-bold mt-1 ${b.amount > 0 ? "" : "text-muted-foreground"}`}>
                           {b.amount > 0 ? money(b.amount) : "—"}
                         </div>
                       </div>

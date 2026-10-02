@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import * as React from "react"
 import { toast } from "sonner"
@@ -322,7 +322,7 @@ export default function CollectionManagementPage() {
                 <div>
                   <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">Total AR Outstanding</p>
                   <div className="mt-1">
-                    <span className="text-2xl font-bold tracking-tight">{formatPHP(topMetrics.totalOutstanding)}</span>
+                    <span data-sensitive className="text-2xl font-bold tracking-tight">{formatPHP(topMetrics.totalOutstanding)}</span>
                   </div>
                 </div>
                 <div className="bg-secondary rounded-lg p-2.5">
@@ -338,7 +338,7 @@ export default function CollectionManagementPage() {
                 <div>
                   <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">Total Overdue</p>
                   <div className="mt-1 flex items-baseline gap-1.5">
-                    <span className="text-2xl font-bold tracking-tight text-red-500">{formatPHP(topMetrics.totalOverdue)}</span>
+                    <span data-sensitive className="text-2xl font-bold tracking-tight text-red-500">{formatPHP(topMetrics.totalOverdue)}</span>
                   </div>
                 </div>
                 <div className="bg-secondary rounded-lg p-2.5">
@@ -354,7 +354,7 @@ export default function CollectionManagementPage() {
                 <div>
                   <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">Collected (Jul)</p>
                   <div className="mt-1">
-                    <span className="text-2xl font-bold tracking-tight text-emerald-500">{formatPHP(topMetrics.collectedThisMonth)}</span>
+                    <span data-sensitive className="text-2xl font-bold tracking-tight text-emerald-500">{formatPHP(topMetrics.collectedThisMonth)}</span>
                   </div>
                 </div>
                 <div className="bg-secondary rounded-lg p-2.5">
@@ -370,7 +370,7 @@ export default function CollectionManagementPage() {
                 <div>
                   <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">Promises to Pay</p>
                   <div className="mt-1 flex items-baseline gap-1.5">
-                    <span className="text-2xl font-bold tracking-tight">{formatPHP(topMetrics.pendingPtp)}</span>
+                    <span data-sensitive className="text-2xl font-bold tracking-tight">{formatPHP(topMetrics.pendingPtp)}</span>
                     <span className="text-[10px] text-amber-500 font-semibold">{promisesToPay.filter(p => p.status === "pending").length} active</span>
                   </div>
                 </div>

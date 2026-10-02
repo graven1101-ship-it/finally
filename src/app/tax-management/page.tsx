@@ -128,7 +128,7 @@ export default function TaxManagementPage() {
                       <TableRow key={item.type}>
                         <TableCell className="font-medium">{item.type}</TableCell>
                         <TableCell>{item.jurisdiction}</TableCell>
-                        <TableCell>{formatCurrency(item.amount)}</TableCell>
+                        <TableCell><span data-sensitive>{formatCurrency(item.amount)}</span></TableCell>
                         <TableCell>{item.due}</TableCell>
                         <TableCell>{item.status}</TableCell>
                       </TableRow>
@@ -186,7 +186,7 @@ export default function TaxManagementPage() {
                         <TableCell className="font-medium">{item.filing}</TableCell>
                         <TableCell>{item.period}</TableCell>
                         <TableCell>{item.status}</TableCell>
-                        <TableCell className="text-right">{formatCurrency(item.amount)}</TableCell>
+                        <TableCell className="text-right"><span data-sensitive>{formatCurrency(item.amount)}</span></TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

@@ -95,9 +95,9 @@ export default function PayrollPage() {
                       <TableRow key={entry.team}>
                         <TableCell className="font-medium">{entry.team}</TableCell>
                         <TableCell className="text-right">{entry.employees}</TableCell>
-                        <TableCell className="text-right">{money(entry.gross)}</TableCell>
-                        <TableCell className="text-right">{money(entry.deductions)}</TableCell>
-                        <TableCell className="text-right font-medium">{money(entry.net)}</TableCell>
+                        <TableCell className="text-right"><span data-sensitive>{money(entry.gross)}</span></TableCell>
+                        <TableCell className="text-right"><span data-sensitive>{money(entry.deductions)}</span></TableCell>
+                        <TableCell className="text-right font-medium"><span data-sensitive>{money(entry.net)}</span></TableCell>
                         <TableCell>
                           <span className="inline-flex items-center gap-1.5 text-sm text-emerald-700 dark:text-emerald-400">
                             <CircleCheck className="size-3.5" />

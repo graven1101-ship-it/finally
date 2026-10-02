@@ -89,7 +89,7 @@ export const columns: ColumnDef<Task>[] = [
     cell: ({ row }) => {
       const amount = row.getValue("amount") as number
       return (
-        <div className="flex w-[90px] items-center font-medium text-sm tabular-nums">
+        <div data-sensitive className="flex w-[90px] items-center font-medium text-sm tabular-nums">
           {amount != null
             ? new Intl.NumberFormat("en-PH", {
                 style: "currency",

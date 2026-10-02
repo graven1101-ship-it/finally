@@ -15,48 +15,31 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-const MASKED_NUMBER = /\d[\d,]*(?:\.\d+)?%?/g
-const originalValues = new WeakMap<Text, string>()
 const SensitiveValuesContext = React.createContext<{
   hidden: boolean
   reveal: () => void
   hide: () => void
 } | null>(null)
 
-function isMaskableTextNode(node: Text) {
-  const parent = node.parentElement
-  if (!parent || parent.closest("[data-sensitive-reveal], input, textarea, select, option, script, style")) {
-    return false
-  }
-
-  MASKED_NUMBER.lastIndex = 0
-  return MASKED_NUMBER.test(node.nodeValue ?? "")
+export function useSensitiveValues() {
+  const context = React.useContext(SensitiveValuesContext)
+  return context
 }
 
-function maskNumbers(node: Text) {
-  const value = node.nodeValue ?? ""
-  if (!originalValues.has(node)) originalValues.set(node, value)
-  node.nodeValue = value.replace(MASKED_NUMBER, (number) => number.replace(/\d/g, "•"))
-}
-
-function restoreNumbers(node: Text) {
-  const original = originalValues.get(node)
-  if (original !== undefined) node.nodeValue = original
-}
-
-function updateVisibleNumbers(root: HTMLElement, hidden: boolean) {
-  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
-  const nodes: Text[] = []
-  let node: Node | null
-  while ((node = walker.nextNode())) nodes.push(node as Text)
-
-  nodes.forEach((text) => {
-    if (hidden) {
-      if (isMaskableTextNode(text)) maskNumbers(text)
-    } else {
-      restoreNumbers(text)
-    }
-  })
+export function SensitiveValue({
+  children,
+  className = "",
+  as: Component = "span",
+}: {
+  children: React.ReactNode
+  className?: string
+  as?: React.ElementType
+}) {
+  return (
+    <Component data-sensitive className={className}>
+      {children}
+    </Component>
+  )
 }
 
 export function SensitiveValuesProvider({ children }: { children: React.ReactNode }) {
@@ -66,13 +49,9 @@ export function SensitiveValuesProvider({ children }: { children: React.ReactNod
   const [error, setError] = React.useState("")
 
   React.useEffect(() => {
-    const root = document.querySelector("main") as HTMLElement | null
-    if (!root) return
-
-    updateVisibleNumbers(root, hidden)
-    const observer = new MutationObserver(() => updateVisibleNumbers(root, hidden))
-    observer.observe(root, { childList: true, characterData: true, subtree: true })
-    return () => observer.disconnect()
+    if (typeof document !== "undefined") {
+      document.documentElement.dataset.sensitiveHidden = hidden ? "true" : "false"
+    }
   }, [hidden])
 
   const revealValues = (event: React.FormEvent) => {

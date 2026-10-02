@@ -214,7 +214,7 @@ export default function CashManagementPage() {
                 <div>
                   <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">Total Cash Position</p>
                   <div className="mt-1">
-                    <span className="text-2xl font-bold tracking-tight">{formatPHP(topMetrics.totalCash)}</span>
+                    <span className="text-2xl font-bold tracking-tight"><span data-sensitive>{formatPHP(topMetrics.totalCash)}</span></span>
                   </div>
                 </div>
                 <div className="bg-secondary rounded-lg p-2.5">
@@ -230,7 +230,7 @@ export default function CashManagementPage() {
                 <div>
                   <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">Cash Inflow (Jul)</p>
                   <div className="mt-1">
-                    <span className="text-2xl font-bold tracking-tight text-emerald-500">{formatPHP(topMetrics.monthInflow)}</span>
+                    <span className="text-2xl font-bold tracking-tight text-emerald-500"><span data-sensitive>{formatPHP(topMetrics.monthInflow)}</span></span>
                   </div>
                 </div>
                 <div className="bg-secondary rounded-lg p-2.5">
@@ -246,7 +246,7 @@ export default function CashManagementPage() {
                 <div>
                   <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">Cash Outflow (Jul)</p>
                   <div className="mt-1">
-                    <span className="text-2xl font-bold tracking-tight text-red-500">{formatPHP(topMetrics.monthOutflow)}</span>
+                    <span className="text-2xl font-bold tracking-tight text-red-500"><span data-sensitive>{formatPHP(topMetrics.monthOutflow)}</span></span>
                   </div>
                 </div>
                 <div className="bg-secondary rounded-lg p-2.5">
@@ -263,7 +263,7 @@ export default function CashManagementPage() {
                   <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">Net Cash Flow</p>
                   <div className="mt-1 flex items-baseline gap-1.5">
                     <span className={`text-2xl font-bold tracking-tight ${topMetrics.netFlow >= 0 ? "text-emerald-500" : "text-red-500"}`}>
-                      {formatPHP(topMetrics.netFlow)}
+                      <span data-sensitive>{formatPHP(topMetrics.netFlow)}</span>
                     </span>
                     <span className="text-[10px] text-muted-foreground font-semibold">{topMetrics.pendingItems} pending</span>
                   </div>

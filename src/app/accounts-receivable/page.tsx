@@ -1188,7 +1188,7 @@ export default function AccountsReceivablePage() {
                     {kpiLoading ? (
                       <Skeleton className="mt-2 h-7 w-28" />
                     ) : (
-                      <p className="mt-1 text-xl font-semibold tabular-nums">{formatCurrency(totalReceivables)}</p>
+                      <p className="mt-1 text-xl font-semibold tabular-nums"><span data-sensitive>{formatCurrency(totalReceivables)}</span></p>
                     )}
                   </div>
                   <div>
@@ -1197,7 +1197,7 @@ export default function AccountsReceivablePage() {
                       <Skeleton className="mt-2 h-7 w-28" />
                     ) : (
                       <p className="mt-1 text-xl font-semibold tabular-nums text-emerald-600 dark:text-emerald-400">
-                        {formatCurrency(collectedReceivables)}
+                        <span data-sensitive>{formatCurrency(collectedReceivables)}</span>
                       </p>
                     )}
                   </div>
@@ -1206,7 +1206,7 @@ export default function AccountsReceivablePage() {
                     {kpiLoading ? (
                       <Skeleton className="mt-2 h-7 w-28" />
                     ) : (
-                      <p className="mt-1 text-xl font-semibold tabular-nums">{formatCurrency(totalOutstanding)}</p>
+                      <p className="mt-1 text-xl font-semibold tabular-nums"><span data-sensitive>{formatCurrency(totalOutstanding)}</span></p>
                     )}
                     <p className="mt-1 text-xs text-muted-foreground">{overdueCount} invoices past due</p>
                   </div>
@@ -1870,7 +1870,7 @@ function InvoiceFormDialog({
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">Subtotal</span>
-                <span className="font-medium tabular-nums">{formatCurrency(subtotal)}</span>
+                <span className="font-medium tabular-nums"><span data-sensitive>{formatCurrency(subtotal)}</span></span>
               </div>
               <div className="space-y-1">
                 <Label htmlFor="invoice-tax" className="text-xs text-muted-foreground">
@@ -1888,7 +1888,7 @@ function InvoiceFormDialog({
               </div>
               <div className="flex items-center justify-between border-t pt-2 text-sm">
                 <span className="text-muted-foreground">Total</span>
-                <span className="text-lg font-semibold tabular-nums">{formatCurrency(total)}</span>
+                <span className="text-lg font-semibold tabular-nums"><span data-sensitive>{formatCurrency(total)}</span></span>
               </div>
             </div>
           </div>
@@ -1998,11 +1998,11 @@ function InvoiceDetailDialog({
               </div>
               <div>
                 <p className="text-muted-foreground">Total amount</p>
-                <p className="font-medium">{formatCurrency(detail.total_amount)}</p>
+                <p className="font-medium"><span data-sensitive>{formatCurrency(detail.total_amount)}</span></p>
               </div>
               <div>
                 <p className="text-muted-foreground">Balance due</p>
-                <p className="font-medium">{formatCurrency(detail.balance_due)}</p>
+                <p className="font-medium"><span data-sensitive>{formatCurrency(detail.balance_due)}</span></p>
               </div>
             </div>
 
@@ -2030,8 +2030,8 @@ function InvoiceDetailDialog({
                         <TableRow key={item.id}>
                           <TableCell>{item.description}</TableCell>
                           <TableCell>{item.quantity}</TableCell>
-                          <TableCell>{formatCurrency(item.unit_price)}</TableCell>
-                          <TableCell>{formatCurrency(item.amount)}</TableCell>
+                          <TableCell><span data-sensitive>{formatCurrency(item.unit_price)}</span></TableCell>
+                          <TableCell><span data-sensitive>{formatCurrency(item.amount)}</span></TableCell>
                         </TableRow>
                       ))
                     )}
@@ -2158,7 +2158,7 @@ function PaymentDetailDialog({
               </div>
               <div>
                 <p className="text-muted-foreground">Total amount</p>
-                <p className="font-medium">{formatCurrency(payment.total_amount)}</p>
+                <p className="font-medium"><span data-sensitive>{formatCurrency(payment.total_amount)}</span></p>
               </div>
               <div>
                 <p className="text-muted-foreground">Recorded by</p>
@@ -2176,7 +2176,7 @@ function PaymentDetailDialog({
                     <div key={allocation.id} className="flex items-center justify-between rounded-lg border p-3">
                       <span>{allocation.invoice_number ?? `Invoice #${allocation.ar_invoice_id}`}</span>
                       <span className="font-medium tabular-nums">
-                        {formatCurrency(allocation.allocated_amount)}
+                        <span data-sensitive>{formatCurrency(allocation.allocated_amount)}</span>
                       </span>
                     </div>
                   ))}
@@ -2607,7 +2607,7 @@ function PaymentFormDialog({
 
           <div className="flex items-center justify-between rounded-lg bg-muted/40 p-3 text-sm">
             <span className="text-muted-foreground">Total collection</span>
-            <span className="text-lg font-semibold tabular-nums">{formatCurrency(total)}</span>
+            <span className="text-lg font-semibold tabular-nums"><span data-sensitive>{formatCurrency(total)}</span></span>
           </div>
         </div>
 

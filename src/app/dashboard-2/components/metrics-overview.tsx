@@ -64,7 +64,7 @@ export function MetricsOverview() {
           <Card key={metric.title} className=" cursor-pointer">
             <CardHeader>
               <CardDescription>{metric.title}</CardDescription>
-              <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+              <CardTitle data-sensitive className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
                 {metric.value}
               </CardTitle>
               <CardAction>

@@ -242,7 +242,7 @@ export default function RevenuePage() {
             <TrendingUp className="h-4 w-4 text-emerald-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{money(totalRevenue)}</div>
+            <div data-sensitive className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{money(totalRevenue)}</div>
             <p className="text-xs text-muted-foreground">Jan to Sep 2026 · {invoices.length} invoices</p>
           </CardContent>
         </Card>
@@ -252,7 +252,7 @@ export default function RevenuePage() {
             <CheckCircle2 className="h-4 w-4 text-blue-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{money(totalCollected)}</div>
+            <div data-sensitive className="text-2xl font-bold">{money(totalCollected)}</div>
             <div className="mt-1 flex items-center gap-2">
               <Progress value={collectionRate} className="h-1.5 flex-1" />
               <span className="text-xs text-muted-foreground">{pct(collectionRate)}</span>
@@ -265,7 +265,7 @@ export default function RevenuePage() {
             <Clock className="h-4 w-4 text-amber-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">{money(totalOutstanding)}</div>
+            <div data-sensitive className="text-2xl font-bold text-amber-600 dark:text-amber-400">{money(totalOutstanding)}</div>
             <p className="text-xs text-muted-foreground">{outstanding.length} outstanding · {overdue.length} overdue</p>
           </CardContent>
         </Card>
@@ -275,7 +275,7 @@ export default function RevenuePage() {
             <AlertTriangle className="h-4 w-4 text-rose-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-rose-600 dark:text-rose-400">{money(overdue.reduce((s,i)=>s+i.balance,0))}</div>
+            <div data-sensitive className="text-2xl font-bold text-rose-600 dark:text-rose-400">{money(overdue.reduce((s,i)=>s+i.balance,0))}</div>
             <p className="text-xs text-muted-foreground">{overdue.length} invoice{overdue.length!==1?"s":""} past due</p>
           </CardContent>
         </Card>
@@ -295,7 +295,7 @@ export default function RevenuePage() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-2">
-                <div className={`text-lg font-bold ${m.color}`}>{money(total)}</div>
+                <div data-sensitive className={`text-lg font-bold ${m.color}`}>{money(total)}</div>
                 <div className="flex items-center gap-2">
                   <div className="flex-1 h-1.5 rounded-full bg-white/50 dark:bg-black/20 overflow-hidden">
                     <div className={`h-1.5 rounded-full ${m.barColor}`} style={{width:`${share}%`}} />
@@ -353,10 +353,10 @@ export default function RevenuePage() {
                           <TableCell className="font-medium max-w-[140px] truncate">{inv.client}</TableCell>
                           <TableCell className="text-muted-foreground max-w-[180px] truncate">{inv.description}</TableCell>
                           <TableCell><span className={`text-xs font-medium ${stM.color}`}>{stM.label}</span></TableCell>
-                          <TableCell className="text-right tabular-nums">{money(inv.amount)}</TableCell>
-                          <TableCell className="text-right tabular-nums text-emerald-600 dark:text-emerald-400">{inv.collected>0?money(inv.collected):"—"}</TableCell>
+                          <TableCell data-sensitive className="text-right tabular-nums">{money(inv.amount)}</TableCell>
+                          <TableCell data-sensitive className="text-right tabular-nums text-emerald-600 dark:text-emerald-400">{inv.collected>0?money(inv.collected):"—"}</TableCell>
                           <TableCell className={`text-right tabular-nums font-medium ${inv.balance>0?inv.status==="overdue"?"text-rose-600 dark:text-rose-400":"text-amber-600 dark:text-amber-400":"text-muted-foreground"}`}>
-                            {inv.balance>0?money(inv.balance):"—"}
+                            {inv.balance>0?<span data-sensitive>{money(inv.balance)}</span>:"—"}
                           </TableCell>
                           <TableCell className="text-muted-foreground whitespace-nowrap">{inv.dueDate}</TableCell>
                           <TableCell><Badge variant={sM.variant}>{sM.label}</Badge></TableCell>
@@ -384,7 +384,7 @@ export default function RevenuePage() {
                     <div key={m.month} className="space-y-1">
                       <div className="flex justify-between text-sm">
                         <span className="font-medium w-8">{m.month}</span>
-                        <span className="font-bold text-emerald-600 dark:text-emerald-400">{money(m.total)}</span>
+                        <span data-sensitive className="font-bold text-emerald-600 dark:text-emerald-400">{money(m.total)}</span>
                       </div>
                       <div className="flex h-5 rounded-full overflow-hidden bg-muted gap-px">
                         {[
@@ -430,12 +430,12 @@ export default function RevenuePage() {
                     {monthlySummary.map((m) => (
                       <TableRow key={m.month} className="text-sm">
                         <TableCell className="font-medium">{m.month} 2026</TableCell>
-                        <TableCell className="text-right tabular-nums text-blue-600">{m.manpower>0?money(m.manpower):"—"}</TableCell>
-                        <TableCell className="text-right tabular-nums text-amber-600">{m.electrical>0?money(m.electrical):"—"}</TableCell>
-                        <TableCell className="text-right tabular-nums text-green-600">{m.maintenance>0?money(m.maintenance):"—"}</TableCell>
-                        <TableCell className="text-right tabular-nums text-violet-600">{m.equipment>0?money(m.equipment):"—"}</TableCell>
-                        <TableCell className="text-right tabular-nums text-rose-600">{m.project>0?money(m.project):"—"}</TableCell>
-                        <TableCell className="text-right font-bold text-emerald-600 dark:text-emerald-400">{money(m.total)}</TableCell>
+                        <TableCell data-sensitive className="text-right tabular-nums text-blue-600">{m.manpower>0?money(m.manpower):"—"}</TableCell>
+                        <TableCell data-sensitive className="text-right tabular-nums text-amber-600">{m.electrical>0?money(m.electrical):"—"}</TableCell>
+                        <TableCell data-sensitive className="text-right tabular-nums text-green-600">{m.maintenance>0?money(m.maintenance):"—"}</TableCell>
+                        <TableCell data-sensitive className="text-right tabular-nums text-violet-600">{m.equipment>0?money(m.equipment):"—"}</TableCell>
+                        <TableCell data-sensitive className="text-right tabular-nums text-rose-600">{m.project>0?money(m.project):"—"}</TableCell>
+                        <TableCell data-sensitive className="text-right font-bold text-emerald-600 dark:text-emerald-400">{money(m.total)}</TableCell>
                       </TableRow>
                     ))}
                     <TableRow className="bg-muted/50 font-semibold">
@@ -445,7 +445,7 @@ export default function RevenuePage() {
                       <TableCell className="text-right">{money(monthlySummary.reduce((s,m)=>s+m.maintenance,0))}</TableCell>
                       <TableCell className="text-right">{money(monthlySummary.reduce((s,m)=>s+m.equipment,0))}</TableCell>
                       <TableCell className="text-right">{money(monthlySummary.reduce((s,m)=>s+m.project,0))}</TableCell>
-                      <TableCell className="text-right text-emerald-600">{money(monthlySummary.reduce((s,m)=>s+m.total,0))}</TableCell>
+                      <TableCell data-sensitive className="text-right text-emerald-600">{money(monthlySummary.reduce((s,m)=>s+m.total,0))}</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
@@ -484,7 +484,7 @@ export default function RevenuePage() {
                           <TableCell className="font-medium">{c.name}</TableCell>
                           <TableCell><Badge variant="outline">{c.type}</Badge></TableCell>
                           <TableCell className="text-right">{c.invoices}</TableCell>
-                          <TableCell className="text-right font-semibold text-emerald-600 dark:text-emerald-400">{money(c.total)}</TableCell>
+                          <TableCell data-sensitive className="text-right font-semibold text-emerald-600 dark:text-emerald-400">{money(c.total)}</TableCell>
                           <TableCell className="text-right text-muted-foreground">{pct(share)}</TableCell>
                           <TableCell className="w-24">
                             <div className="h-1.5 rounded-full bg-muted overflow-hidden">
@@ -497,7 +497,7 @@ export default function RevenuePage() {
                     <TableRow className="bg-muted/50 font-semibold">
                       <TableCell colSpan={3}>Total</TableCell>
                       <TableCell className="text-right">{topClients.reduce((s,c)=>s+c.invoices,0)}</TableCell>
-                      <TableCell className="text-right text-emerald-600">{money(topClients.reduce((s,c)=>s+c.total,0))}</TableCell>
+                      <TableCell data-sensitive className="text-right text-emerald-600">{money(topClients.reduce((s,c)=>s+c.total,0))}</TableCell>
                       <TableCell colSpan={2} />
                     </TableRow>
                   </TableBody>

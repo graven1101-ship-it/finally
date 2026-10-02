@@ -54,7 +54,7 @@ export default function Dashboard2() {
                   {statutoryPayables.map((pay, i) => (
                     <div key={i} className="rounded-lg border p-3">
                       <div className="text-sm font-medium">{pay.label}</div>
-                      <div className="mt-1 text-lg font-semibold text-rose-600">
+                      <div data-sensitive className="mt-1 text-lg font-semibold text-rose-600">
                         {formatCurrency(pay.amount)}
                       </div>
                       <div className="mt-1 text-xs text-muted-foreground">{pay.note}</div>
