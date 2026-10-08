@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -8,9 +8,150 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Logo } from "@/components/logo"
 import { useNavigate } from "react-router-dom"
-import { ArrowLeft, KeyRound, ShieldCheck } from "lucide-react"
+import { ArrowLeft, KeyRound, ShieldCheck, Timer } from "lucide-react"
 import darkModeImage from "./darkMODE.jpg"
 
+// ─── Lockout constants ───────────────────────────────────────────────
+const LOCKOUT_THRESHOLD = 3        // Failed attempts before first lockout
+const LOCKOUT_BASE_SECONDS = 30    // Initial lockout duration
+const LOCKOUT_INCREMENT = 30       // Added per subsequent lockout
+const LOCKOUT_MAX_SECONDS = 300    // 5 minute cap
+
+// ─── localStorage helpers ────────────────────────────────────────────
+interface LockoutData {
+  failCount: number
+  lockoutCount: number       // How many times the user has been locked out
+  lockedUntil: number | null // Unix ms timestamp
+}
+
+const LOCKOUT_KEYS = {
+  credentials: "pms_lockout_credentials",
+  totp: "pms_lockout_totp",
+} as const
+
+function readLockout(key: string): LockoutData {
+  try {
+    const raw = localStorage.getItem(key)
+    if (raw) return JSON.parse(raw)
+  } catch { /* ignore corrupt data */ }
+  return { failCount: 0, lockoutCount: 0, lockedUntil: null }
+}
+
+function writeLockout(key: string, data: LockoutData) {
+  localStorage.setItem(key, JSON.stringify(data))
+}
+
+function clearLockout(key: string) {
+  localStorage.removeItem(key)
+}
+
+// ─── useLockout hook ─────────────────────────────────────────────────
+function useLockout(step: "credentials" | "totp") {
+  const key = LOCKOUT_KEYS[step]
+  const [remaining, setRemaining] = useState(0)
+  const [lockoutData, setLockoutData] = useState<LockoutData>(() => readLockout(key))
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  const isLockedOut = remaining > 0
+
+  // Tick-down function
+  const startCountdown = useCallback((lockedUntil: number) => {
+    if (intervalRef.current) clearInterval(intervalRef.current)
+
+    const tick = () => {
+      const diff = Math.ceil((lockedUntil - Date.now()) / 1000)
+      if (diff <= 0) {
+        setRemaining(0)
+        if (intervalRef.current) clearInterval(intervalRef.current)
+      } else {
+        setRemaining(diff)
+      }
+    }
+
+    tick()
+    intervalRef.current = setInterval(tick, 1000)
+  }, [])
+
+  // On mount / step change, restore any active lockout
+  useEffect(() => {
+    const data = readLockout(key)
+    setLockoutData(data)
+    if (data.lockedUntil && data.lockedUntil > Date.now()) {
+      startCountdown(data.lockedUntil)
+    } else if (data.lockedUntil) {
+      // Lockout expired while page was closed — keep fail counts, clear timer
+      const updated = { ...data, lockedUntil: null }
+      writeLockout(key, updated)
+      setLockoutData(updated)
+    }
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current)
+    }
+  }, [key, startCountdown])
+
+  // Called on every failed attempt
+  const recordFailure = useCallback(() => {
+    const current = readLockout(key)
+    const newFailCount = current.failCount + 1
+
+    if (newFailCount >= LOCKOUT_THRESHOLD) {
+      // Trigger lockout
+      const newLockoutCount = current.lockoutCount + 1
+      const duration = Math.min(
+        LOCKOUT_BASE_SECONDS + (newLockoutCount - 1) * LOCKOUT_INCREMENT,
+        LOCKOUT_MAX_SECONDS
+      )
+      const lockedUntil = Date.now() + duration * 1000
+
+      const updated: LockoutData = {
+        failCount: 0,           // Reset fail count after triggering lockout
+        lockoutCount: newLockoutCount,
+        lockedUntil,
+      }
+      writeLockout(key, updated)
+      setLockoutData(updated)
+      startCountdown(lockedUntil)
+    } else {
+      // Just increment
+      const updated: LockoutData = { ...current, failCount: newFailCount }
+      writeLockout(key, updated)
+      setLockoutData(updated)
+    }
+  }, [key, startCountdown])
+
+  // Called on successful login — clears everything
+  const resetLockout = useCallback(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current)
+    clearLockout(key)
+    setLockoutData({ failCount: 0, lockoutCount: 0, lockedUntil: null })
+    setRemaining(0)
+  }, [key])
+
+  const attemptsBeforeLockout = Math.max(0, LOCKOUT_THRESHOLD - lockoutData.failCount)
+
+  return { isLockedOut, remaining, recordFailure, resetLockout, lockoutData, attemptsBeforeLockout }
+}
+
+// ─── Countdown display component ────────────────────────────────────
+function CooldownBanner({ remaining }: { remaining: number }) {
+  const minutes = Math.floor(remaining / 60)
+  const seconds = remaining % 60
+  const timeStr = minutes > 0
+    ? `${minutes}:${seconds.toString().padStart(2, "0")}`
+    : `${seconds}s`
+
+  return (
+    <div className="flex items-center justify-center gap-2 text-sm font-medium text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 p-3 rounded-lg animate-pulse">
+      <Timer className="size-4 shrink-0" />
+      <span>
+        Too many failed attempts. Try again in <span className="font-bold tabular-nums">{timeStr}</span>
+      </span>
+    </div>
+  )
+}
+
+// ─── Main component ─────────────────────────────────────────────────
 export function LoginForm3({
   className,
   ...props
@@ -26,9 +167,16 @@ export function LoginForm3({
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  // Lockout hooks — one per step
+  const credentialsLockout = useLockout("credentials")
+  const totpLockout = useLockout("totp")
+
   // Step 1: Submit credentials
   const handleCredentialsSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+
+    if (credentialsLockout.isLockedOut) return
+
     setError(null)
     setIsSubmitting(true)
 
@@ -44,8 +192,12 @@ export function LoginForm3({
       const data = await response.json()
 
       if (!response.ok) {
+        credentialsLockout.recordFailure()
         throw new Error(data.error || "Login failed")
       }
+
+      // Success — reset lockout
+      credentialsLockout.resetLockout()
 
       // If TOTP is required, move to step 2
       if (data.requireTotp) {
@@ -75,6 +227,8 @@ export function LoginForm3({
     event.preventDefault()
     if (!pendingUserId) return
 
+    if (totpLockout.isLockedOut) return
+
     if (!totpCode || totpCode.trim().length !== 6) {
       setError("Please enter a valid 6-digit TOTP code.")
       return
@@ -95,8 +249,12 @@ export function LoginForm3({
       const data = await response.json()
 
       if (!response.ok) {
+        totpLockout.recordFailure()
         throw new Error(data.error || "Invalid verification code")
       }
+
+      // Success — reset lockout
+      totpLockout.resetLockout()
 
       if (data.token) {
         localStorage.setItem("token", data.token)
@@ -133,6 +291,9 @@ export function LoginForm3({
       if (!response.ok) {
         throw new Error(data.error || "Failed to skip TOTP")
       }
+
+      // Success — reset lockout
+      totpLockout.resetLockout()
 
       if (data.token) {
         localStorage.setItem("token", data.token)
@@ -176,9 +337,19 @@ export function LoginForm3({
                   <p className="text-muted-foreground text-balance">Login to your PMS FINANCE account</p>
                 </div>
 
-                {error && (
+                {/* Cooldown banner */}
+                {credentialsLockout.isLockedOut && (
+                  <CooldownBanner remaining={credentialsLockout.remaining} />
+                )}
+
+                {error && !credentialsLockout.isLockedOut && (
                   <div className="text-red-500 text-sm font-medium text-center bg-red-50 dark:bg-red-900/10 p-2 rounded-md">
                     {error}
+                    {credentialsLockout.attemptsBeforeLockout > 0 && credentialsLockout.attemptsBeforeLockout < LOCKOUT_THRESHOLD && (
+                      <p className="text-xs mt-1 text-red-400">
+                        {credentialsLockout.attemptsBeforeLockout} attempt{credentialsLockout.attemptsBeforeLockout !== 1 ? "s" : ""} remaining before cooldown
+                      </p>
+                    )}
                   </div>
                 )}
 
@@ -191,7 +362,7 @@ export function LoginForm3({
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
                     required
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || credentialsLockout.isLockedOut}
                   />
                 </div>
                 <div className="grid gap-3">
@@ -210,12 +381,16 @@ export function LoginForm3({
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
                     required
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || credentialsLockout.isLockedOut}
                   />
                 </div>
 
-                <Button type="submit" className="w-full cursor-pointer" disabled={isSubmitting}>
-                  {isSubmitting ? "Logging in..." : "Login"}
+                <Button type="submit" className="w-full cursor-pointer" disabled={isSubmitting || credentialsLockout.isLockedOut}>
+                  {credentialsLockout.isLockedOut
+                    ? "Account Temporarily Locked"
+                    : isSubmitting
+                      ? "Logging in..."
+                      : "Login"}
                 </Button>
 
                 <div className="text-center text-sm">
@@ -249,9 +424,19 @@ export function LoginForm3({
                   </p>
                 </div>
 
-                {error && (
+                {/* Cooldown banner */}
+                {totpLockout.isLockedOut && (
+                  <CooldownBanner remaining={totpLockout.remaining} />
+                )}
+
+                {error && !totpLockout.isLockedOut && (
                   <div className="text-red-500 text-sm font-medium text-center bg-red-50 dark:bg-red-900/10 p-2 rounded-md">
                     {error}
+                    {totpLockout.attemptsBeforeLockout > 0 && totpLockout.attemptsBeforeLockout < LOCKOUT_THRESHOLD && (
+                      <p className="text-xs mt-1 text-red-400">
+                        {totpLockout.attemptsBeforeLockout} attempt{totpLockout.attemptsBeforeLockout !== 1 ? "s" : ""} remaining before cooldown
+                      </p>
+                    )}
                   </div>
                 )}
 
@@ -277,20 +462,24 @@ export function LoginForm3({
                     }
                     autoFocus
                     required
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || totpLockout.isLockedOut}
                   />
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <Button type="submit" className="w-full cursor-pointer" disabled={isSubmitting}>
-                    {isSubmitting ? "Verifying..." : "Verify Code"}
+                  <Button type="submit" className="w-full cursor-pointer" disabled={isSubmitting || totpLockout.isLockedOut}>
+                    {totpLockout.isLockedOut
+                      ? "Temporarily Locked"
+                      : isSubmitting
+                        ? "Verifying..."
+                        : "Verify Code"}
                   </Button>
 
                   <Button
                     type="button"
                     variant="outline"
                     className="w-full cursor-pointer"
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || totpLockout.isLockedOut}
                     onClick={handleSkipTotp}
                   >
                     Skip TOTP
