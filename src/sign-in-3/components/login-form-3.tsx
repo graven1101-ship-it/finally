@@ -6,6 +6,13 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Logo } from "@/components/logo"
 import { useNavigate } from "react-router-dom"
 import { ArrowLeft, KeyRound, ShieldCheck, Timer } from "lucide-react"
@@ -162,6 +169,7 @@ export function LoginForm3({
   const [step, setStep] = useState<"credentials" | "totp">("credentials")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [role, setRole] = useState("")
   const [totpCode, setTotpCode] = useState("")
   const [pendingUserId, setPendingUserId] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -178,6 +186,12 @@ export function LoginForm3({
     if (credentialsLockout.isLockedOut) return
 
     setError(null)
+
+    if (role === "ceo") {
+      navigate("/ceo-dashboard")
+      return
+    }
+
     setIsSubmitting(true)
 
     try {
@@ -186,7 +200,7 @@ export function LoginForm3({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, role }),
       })
 
       const data = await response.json()
@@ -364,6 +378,39 @@ export function LoginForm3({
                     required
                     disabled={isSubmitting || credentialsLockout.isLockedOut}
                   />
+                </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="role">Role</Label>
+                  <Select
+                    value={role}
+                    onValueChange={(val) => {
+                      setRole(val)
+                      if (val === "ceo") {
+                        navigate("/ceo-dashboard")
+                      }
+                    }}
+                    disabled={isSubmitting || credentialsLockout.isLockedOut}
+                  >
+                    <SelectTrigger id="role" className="w-full">
+                      <SelectValue placeholder="Select your role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem
+                        value="ceo"
+                        onClick={() => navigate("/ceo-dashboard")}
+                      >
+                        CEO
+                      </SelectItem>
+                      <SelectItem value="auditor">Auditor</SelectItem>
+                      <SelectItem value="system_admin">System Admin</SelectItem>
+                      <SelectItem value="chief_financial_officer">Chief Financial Officer</SelectItem>
+                      <SelectItem value="treasurer">Treasurer</SelectItem>
+                      <SelectItem value="managerial_accountant">Managerial Accountant</SelectItem>
+                      <SelectItem value="finance_controller_approver">Finance Controller / Approver</SelectItem>
+                      <SelectItem value="tax_accountant">Tax Accountant</SelectItem>
+                      <SelectItem value="accountant">Accountant</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div className="grid gap-3">
                   <div className="flex items-center">
