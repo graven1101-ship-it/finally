@@ -192,6 +192,16 @@ export function LoginForm3({
       return
     }
 
+    if (role === "auditor" || role === "audit_committee") {
+      navigate("/audit-dashboard")
+      return
+    }
+
+    if (role === "system_admin" || role === "system_administrator") {
+      navigate("/system-admin-dashboard")
+      return
+    }
+
     setIsSubmitting(true)
 
     try {
@@ -387,6 +397,10 @@ export function LoginForm3({
                       setRole(val)
                       if (val === "ceo") {
                         navigate("/ceo-dashboard")
+                      } else if (val === "auditor") {
+                        navigate("/audit-dashboard")
+                      } else if (val === "system_admin" || val === "system_administrator") {
+                        navigate("/system-admin-dashboard")
                       }
                     }}
                     disabled={isSubmitting || credentialsLockout.isLockedOut}
@@ -401,8 +415,18 @@ export function LoginForm3({
                       >
                         CEO
                       </SelectItem>
-                      <SelectItem value="auditor">Auditor</SelectItem>
-                      <SelectItem value="system_admin">System Admin</SelectItem>
+                      <SelectItem
+                        value="auditor"
+                        onClick={() => navigate("/audit-dashboard")}
+                      >
+                        Audit Committee / Auditor
+                      </SelectItem>
+                      <SelectItem
+                        value="system_admin"
+                        onClick={() => navigate("/system-admin-dashboard")}
+                      >
+                        System Administrator
+                      </SelectItem>
                       <SelectItem value="chief_financial_officer">Chief Financial Officer</SelectItem>
                       <SelectItem value="treasurer">Treasurer</SelectItem>
                       <SelectItem value="managerial_accountant">Managerial Accountant</SelectItem>

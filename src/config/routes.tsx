@@ -6,6 +6,8 @@ const Landing = lazy(() => import('@/app/landing/page'))
 const Dashboard = lazy(() => import('@/app/dashboard/page'))
 const Dashboard2 = lazy(() => import('@/app/dashboard-2/page'))
 const CeoDashboard = lazy(() => import('@/app/ceo-dashboard/page'))
+const AuditDashboard = lazy(() => import('@/app/audit-dashboard/page'))
+const SystemAdminDashboard = lazy(() => import('@/app/system-admin-dashboard/page'))
 const Mail = lazy(() => import('@/app/mail/page'))
 const Tasks = lazy(() => import('@/app/tasks/page'))
 const Chat = lazy(() => import('@/app/chat/page'))
@@ -90,6 +92,14 @@ export const routes: RouteConfig[] = [
   {
     path: "/ceo-dashboard",
     element: <CeoDashboard />
+  },
+  {
+    path: "/audit-dashboard",
+    element: <AuditDashboard />
+  },
+  {
+    path: "/system-admin-dashboard",
+    element: <SystemAdminDashboard />
   },
 
   // Application Routes
