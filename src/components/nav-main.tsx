@@ -45,10 +45,12 @@ export function NavMain({
   const groupRef = React.useRef<HTMLDivElement>(null)
   const [openOverrides, setOpenOverrides] = React.useState<Record<string, boolean>>({})
 
-  // Match both the path and any query string so tabbed links resolve correctly.
+  // Match path, hash, and any query string so tabbed and anchor links resolve correctly.
   const isUrlActive = (url: string) => {
-    const [path, query = ""] = url.split("?")
+    const [urlWithoutHash, hash] = url.split("#")
+    const [path, query = ""] = urlWithoutHash.split("?")
     if (location.pathname !== path) return false
+    if (hash && location.hash !== `#${hash}`) return false
     if (!query) return true
     const expected = new URLSearchParams(query)
     const current = new URLSearchParams(location.search)
@@ -65,7 +67,7 @@ export function NavMain({
   // Reset manual toggles when navigating so route-derived state wins
   React.useEffect(() => {
     setOpenOverrides({})
-  }, [location.pathname, location.search])
+  }, [location.pathname, location.search, location.hash])
 
   return (
     <SidebarGroup ref={groupRef}>

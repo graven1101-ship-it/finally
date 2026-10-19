@@ -170,6 +170,10 @@ export const routes: RouteConfig[] = [
     element: <Accountant />
   },
   {
+    path: "/accountant-dashboard",
+    element: <Accountant />
+  },
+  {
     path: "/admin",
     element: <Admin />
   },

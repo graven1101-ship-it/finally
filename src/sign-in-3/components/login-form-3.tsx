@@ -202,6 +202,11 @@ export function LoginForm3({
       return
     }
 
+    if (role === "accountant") {
+      navigate("/accountant")
+      return
+    }
+
     setIsSubmitting(true)
 
     try {
@@ -401,6 +406,8 @@ export function LoginForm3({
                         navigate("/audit-dashboard")
                       } else if (val === "system_admin" || val === "system_administrator") {
                         navigate("/system-admin-dashboard")
+                      } else if (val === "accountant") {
+                        navigate("/accountant")
                       }
                     }}
                     disabled={isSubmitting || credentialsLockout.isLockedOut}
@@ -432,7 +439,12 @@ export function LoginForm3({
                       <SelectItem value="managerial_accountant">Managerial Accountant</SelectItem>
                       <SelectItem value="finance_controller_approver">Finance Controller / Approver</SelectItem>
                       <SelectItem value="tax_accountant">Tax Accountant</SelectItem>
-                      <SelectItem value="accountant">Accountant</SelectItem>
+                      <SelectItem
+                        value="accountant"
+                        onClick={() => navigate("/accountant")}
+                      >
+                        Accountant
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
